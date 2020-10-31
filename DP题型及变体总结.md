@@ -37,5 +37,45 @@ for(int i = 1; i <= n; ++i)
     }
 ```
 
+### 2. 完全背包
 
+1）模板:
+
+```c++
+for(int i = 1; i <= n; ++i)
+    {
+        for(int j = w[i]; j <= m; ++j)
+        {
+            f[j] = max(f[j - v[i]] , f[ j - w[i] ]+ v[i]);
+        }
+    }
+```
+
+
+
+### 3. 分组背包
+
+1）模板(用单调队列优化):
+
+```c++
+for(int i = 0; i < n; ++i)
+    {
+        int w , v, s;
+        scanf("%d%d%d" , &v , &w , &s);
+
+        for(int r = 0; r < v; ++r)
+        {
+            hh = 0 , tt = -1;
+            memcpy(g , f , sizeof(f));
+            for(int k = r; k <= m; k += v)
+            {
+                if(hh <= tt && q[hh] < k - s * v) ++hh;
+                if(hh <= tt) f[k] = max(f[k] , g[q[hh]] + (k - q[hh]) / v * w);   //更新答案
+                while( hh <= tt && g[q[tt]] - (q[tt] - r) / v * w <= g[k] - (k - r) / v * w ) --tt;//r是基点
+                q[++tt] = k;
+            }
+        }
+    }
+
+```
 
